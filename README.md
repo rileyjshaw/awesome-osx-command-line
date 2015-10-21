@@ -436,12 +436,6 @@ defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
 ### Opening Things
 
-#### Change Working Directory to Finder Path
-If multiple windows are open, it chooses the top-most one.
-```bash
-cd "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')"
-```
-
 #### Open URL
 ```bash
 open http://www.github.com
@@ -711,6 +705,11 @@ airport -s
 ipconfig getifaddr en0
 ```
 
+#### Show Current SSID
+```bash
+/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk '/ SSID/ {print substr($0, index($0, $2))}'
+```
+
 #### Show Wi-Fi Connection History
 ```bash
 defaults read /Library/Preferences/SystemConfiguration/com.apple.airport.preferences | grep LastConnected -A 7
@@ -719,7 +718,7 @@ defaults read /Library/Preferences/SystemConfiguration/com.apple.airport.prefere
 #### Show Wi-Fi Network Passwords
 Exchange SSID with the SSID of the access point you wish to query the password from.
 ```bash
-security find-generic-password -a "SSID" -gw
+security find-generic-password -ga "SSID" | grep "password:"
 ```
 
 
